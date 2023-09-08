@@ -1,14 +1,22 @@
 <script setup>
   import { RouterView } from 'vue-router'
+  
+  import SideBar from './components/SideBar.vue'
 
 </script>
 
 <template>
-  <div>
+  <main class="main">
+    <SideBar />
     <RouterView />
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
-
+  main {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+  }
 </style>
