@@ -8,6 +8,7 @@
     .sidebar-container {
         background-color: white;
         width: 30%;
+        border-radius: 1rem;
     }
 
 </style>
