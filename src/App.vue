@@ -13,10 +13,13 @@
 </template>
 
 <style lang="scss" scoped>
-  main {
+  .main {
+    background-color: rgb(243 244 246);
     display: flex;
     flex-direction: row;
     height: 100vh;
     width: 100vw;
+    padding: 1rem;
+    gap: 1rem;
   }
 </style>

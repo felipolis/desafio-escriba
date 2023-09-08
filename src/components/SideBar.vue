@@ -1,5 +1,13 @@
 <template>
-    <div>
+    <div class="sidebar-container">
         Sidebar
     </div>
 </template>
+
+<style lang="scss">
+    .sidebar-container {
+        background-color: white;
+        width: 30%;
+    }
+
+</style>

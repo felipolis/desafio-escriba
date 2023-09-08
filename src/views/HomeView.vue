@@ -7,14 +7,16 @@
 	</main>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 	.home-container {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 100vh;
-		width: 100vw;
+		height: 100%;
+		width: 70%;
+		background-color: white;
 		.img-container {
 			display: flex;
 			justify-content: center;
@@ -22,7 +24,6 @@
 			width: 30%;
 
 			img {
-				height: 100%;
 				width: 100%;
 			}
 		}
