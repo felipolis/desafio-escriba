@@ -21,7 +21,9 @@ const props = defineProps({
 						<th>Nome</th>
 						<th>CPF</th>
 						<th>Nascimento</th>
-						<th>Ações</th>
+						<th class="add">
+							<button>Adicionar</button>
+						</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,7 +32,10 @@ const props = defineProps({
 					<td>{{ pessoa.nome }}</td>
 					<td>{{ pessoa.cpf }}</td>
 					<td>{{ pessoa.dataNascimento }}</td>
-					<td>Ações</td>
+					<td class="btns">
+						<button class="edit">Editar</button>
+						<button class="del">Excluir</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -57,6 +62,25 @@ const props = defineProps({
 					padding: 1rem;
 					text-align: left;
 					border-bottom: 1px solid #bdc3c7;
+
+				}
+				
+				.add {
+					display: flex;
+					justify-content: flex-end;
+					
+					button {
+						background-color: #409EFF;
+						border: none;
+						border-radius: 0.2rem;
+						padding-left: 1rem;
+						padding-right: 1rem;
+						padding-top: 0.5rem;
+						padding-bottom: 0.5rem;
+						cursor: pointer;
+						color: white;
+	
+					}
 				}
 			}
 		}
@@ -67,6 +91,34 @@ const props = defineProps({
 					padding: 1rem;
 					text-align: left;
 					border-bottom: 1px solid #bdc3c7;
+
+					
+				}
+				
+				.btns {
+					display: flex;
+					justify-content: flex-end;
+
+					button {
+						background-color: #409EFF;
+						border: none;
+						border-radius: 0.2rem;
+						padding-left: 1rem;
+						padding-right: 1rem;
+						padding-top: 0.5rem;
+						padding-bottom: 0.5rem;
+						cursor: pointer;
+						color: white;
+	
+						&.edit {
+							background-color: #67C23A;
+							margin-right: 1rem;
+						}
+	
+						&.del {
+							background-color: #F56C6C;
+						}
+					}
 				}
 			}
 		}
