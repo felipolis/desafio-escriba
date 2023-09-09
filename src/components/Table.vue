@@ -22,6 +22,8 @@ const isModalOpen = computed(() => store.state.isModalOpen)
 const currentItem = ref({})
 const action = ref("")
 const selectedProducts = ref([])
+const currentProduct = ref({})
+const currentQtd = ref(0)
 
 onMounted(() => {
 	store.dispatch("searchPeople")
@@ -203,6 +205,39 @@ const deleteProduct = async (item) => {
 	}
 }
 
+const addProduct = () => {
+	// Verifica se o produto ja nao foi adicionado em selectedProducst
+	if (selectedProducts.value.find(product => product.id === currentProduct.value)) {
+		createToast("Produto já adicionado", {
+			type: "danger",
+			hideProgressBar: true,
+			position: "top-center",
+			timeout: 2000,
+		});
+		return
+	}
+
+	// Verifica se a quantidade é maior que 0
+	if (currentQtd.value <= 0) {
+		createToast("Quantidade deve ser maior que 0", {
+			type: "danger",
+			hideProgressBar: true,
+			position: "top-center",
+			timeout: 2000,
+		});
+		return
+	}
+
+
+	// Adiciona o produto em selectedProducts
+	selectedProducts.value.push({
+		id: currentProduct.value,
+		descricao: store.state.searchedProducts.find(product => product.id === currentProduct.value).descricao,
+		valorUnitario: store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario,
+		quantidade: currentQtd.value
+	})
+}
+
 </script>
 
 <template>
@@ -321,6 +356,7 @@ const deleteProduct = async (item) => {
 								v-if="props.type === 'pedido'"
 								name="produto" 
 								id="produto"
+								v-model="currentProduct"
 							>
 								<option 
 									v-for="produto in store.state.searchedProducts" 
@@ -333,7 +369,12 @@ const deleteProduct = async (item) => {
 
 
 							<label v-if="props.type === 'pedido'" for="quantidade">Quantidade</label>
-							<input v-if="props.type === 'pedido'" type="number" id="quantidade" />
+							<input 
+								v-if="props.type === 'pedido'" 
+								type="number" 
+								id="quantidade" 
+								v-model="currentQtd"
+							/>
 
 							<button 
 								v-if="props.type === 'pedido'"
@@ -344,7 +385,27 @@ const deleteProduct = async (item) => {
 						</div>
 
 						<!-- lista de produtos selecionados -->
-
+						<div
+							class="select-item"
+							v-for="produto in selectedProducts"
+							:key="produto.id"
+						>
+							<input
+								type="text"
+								:value="produto.descricao"
+								disabled
+							/>
+							<input
+								type="text"
+								:value="produto.quantidade"
+								disabled
+							/>
+							<button
+								@click="selectedProducts.splice(selectedProducts.indexOf(produto), 1)"
+							>
+								-
+							</button>
+						</div>
 
 
 						
