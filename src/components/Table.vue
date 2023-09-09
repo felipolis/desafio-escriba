@@ -46,8 +46,8 @@ const openModal = (mode, item=null) => {
 	} else if (mode === "edit") {
 		modalTitle.value = "Editar " + props.type
 		currentItem.value = {...item}
-		console.log(currentItem.value)
 		action.value = "edit"
+		selectedProducts.value = [...item.itens]
 	}
 	store.commit("setModalState", true);
 }
@@ -273,7 +273,7 @@ const addProduct = () => {
 			descricao: store.state.searchedProducts.find(product => product.id === currentProduct.value).descricao
 		},
 		quantidade: currentQtd.value,
-		valorUnitario: store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario,
+		valor: store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario,
 		subtotal: currentQtd.value * store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario
 	})
 }
@@ -289,7 +289,7 @@ const createOrder = async () => {
 				nome: currentItem.value.cliente.nome,
 			},
 			dataEmissao: new Date().toISOString().slice(0, 10),
-			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
+			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0),
 			itens: selectedProducts.value
 		})
 		store.commit("addOrder", response.data);
@@ -306,7 +306,7 @@ const editOrder = async () => {
 				nome: currentItem.value.cliente.nome,
 			},
 			dataEmissao: new Date().toISOString().slice(0, 10),
-			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
+			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0),
 			itens: selectedProducts.value
 		})
 	} catch (error) {
@@ -504,7 +504,7 @@ const deleteOrder = async (item) => {
 							v-if="props.type === 'pedido'" 
 							type="text" 
 							id="valorTotal" 
-							:value="selectedProducts.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0)"
+							:value="selectedProducts.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)"
 							disabled
 						/>
 
