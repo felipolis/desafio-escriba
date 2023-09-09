@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps } from 'vue'
 const props = defineProps({
+	type: String,
     header: {
         type: Array,
         required: true
@@ -17,18 +18,27 @@ const props = defineProps({
 		<table>
 			<thead>
 				<tr>
-						<th v-for="t in header" :key="t">{{ t }}</th>
-						<th class="add">
-							<button>Adicionar</button>
-						</th>
+					<th v-for="t in header" :key="t">{{ t }}</th>
+					<th class="add">
+						<button>Adicionar</button>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="pessoa in data" :key="pessoa.id">
-					<td>{{ pessoa.id }}</td>
-					<td>{{ pessoa.nome }}</td>
-					<td>{{ pessoa.cpf }}</td>
-					<td>{{ pessoa.dataNascimento }}</td>
+				<tr v-for="item in data" :key="item.id">
+					<td>{{ item.id }}</td>
+
+					<td v-if="type === 'pessoa'">{{ item.nome }}</td>
+					<td v-if="type === 'pessoa'">{{ item.cpf }}</td>
+					<td v-if="type === 'pessoa'">{{ item.dataNascimento }}</td>
+
+					<td v-if="type === 'produto'">{{ item.descricao }}</td>
+					<td v-if="type === 'produto'">{{ item.valoUnitario }}</td>
+
+					<td v-if="type === 'pedido'">{{ item.cliente.nome }}</td>
+					<td v-if="type === 'pedido'">{{ item.dataEmissao }}</td>
+					<td v-if="type === 'pedido'">{{ item.valorTotal }}</td>
+
 					<td class="btns">
 						<button class="edit">Editar</button>
 						<button class="del">Excluir</button>
@@ -88,6 +98,7 @@ const props = defineProps({
 
 		tbody {
 			tr {
+
 				td {
 					padding: 1rem;
 					text-align: left;

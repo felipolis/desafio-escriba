@@ -11,6 +11,10 @@ const routeName = route.name;
 const search = async () => {
     if (routeName === 'pessoas') {
         store.dispatch("searchPeople", keyword.value);
+    } else if (routeName === 'produtos') {
+        store.dispatch("searchProducts", keyword.value);
+    } else if (routeName === 'pedidos') {
+        store.dispatch("searchOrders", keyword.value);
     }
 
 }

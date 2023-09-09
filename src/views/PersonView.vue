@@ -35,7 +35,7 @@ onMounted(() => {
         <SearchBar />
 
         <!-- TABLE -->
-        <Table :header="header" :data="data" />
+        <Table :header="header" :data="data" type="pessoa" />
     </div>
 </template>
 
