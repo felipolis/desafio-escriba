@@ -22,3 +22,11 @@ export function addPerson(state, person) {
 export function deletePerson(state, person) {
     state.searchedPeople = state.searchedPeople.filter(p => p.id !== person.id)
 }
+
+export function addProduct(state, product) {
+    state.searchedProducts.push(product)
+}
+
+export function deleteProduct(state, product) {
+    state.searchedProducts = state.searchedProducts.filter(p => p.id !== product.id)
+}

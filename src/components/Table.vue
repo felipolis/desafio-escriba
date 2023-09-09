@@ -44,7 +44,6 @@ const enviarFormulario = () => {
 	// verifica se o formulário está vazio
 
 	if (props.type === "pessoa") {
-		// verificações
 		if (Object.keys(currentItem.value).length === 0) {
 			if (!currentItem.value.nome) {
 				createToast("Preencha o nome", {
@@ -72,8 +71,6 @@ const enviarFormulario = () => {
 					timeout: 2000,
 				});
 			}
-
-
 			return
 		}
 
@@ -84,8 +81,38 @@ const enviarFormulario = () => {
 		} else if (action.value === 'edit') {
 			editPerson()
 		}
-		
+	} else if (props.type === "produto") {
+		if (Object.keys(currentItem.value).length === 0) {
+			if (!currentItem.value.descricao) {
+				createToast("Preencha a descrição", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+
+			if (!currentItem.value.valoUnitario) {
+				createToast("Preencha o valor unitário", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+			return
+		}
+
+		// Envia o formulário
+		if (action.value === 'create') {
+			createProduct()
+
+		} else if (action.value === 'edit') {
+			editProduct()
+		}
 	}
+
+
 
 	closeModal()
 }
@@ -93,6 +120,8 @@ const enviarFormulario = () => {
 const handleDelete = (item) => {
 	if (props.type === "pessoa") {
 		deletePerson(item)
+	} else if (props.type === "produto") {
+		deleteProduct(item)
 	}
 }
 
@@ -101,7 +130,6 @@ const handleDelete = (item) => {
 
 
 const createPerson = async () => {
-	// gera um id 
 	const id = Math.floor(Math.random() * 1000) + 1
 
 	try {
@@ -116,7 +144,6 @@ const createPerson = async () => {
 		console.log(error)
 	}
 }
-
 const editPerson = async () => {
 	try {
 		await axios.put(`http://localhost:3000/pessoas/${currentItem.value.id}`, {
@@ -128,9 +155,6 @@ const editPerson = async () => {
 		console.log(error)
 	}
 }
-
-
-
 const deletePerson = async (item) => {
 	console.log(item)
 	try {
@@ -140,6 +164,43 @@ const deletePerson = async (item) => {
 		console.log(error)
 	}
 }
+
+const createProduct = async () => {
+	const id = Math.floor(Math.random() * 1000) + 1
+
+	try {
+		const response = await axios.post('http://localhost:3000/produtos', {
+			id: id,
+			descricao: currentItem.value.descricao,
+			valoUnitario: currentItem.value.valoUnitario
+		})
+		store.commit("addProduct", response.data);
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const editProduct = async () => {
+	try {
+		await axios.put(`http://localhost:3000/produtos/${currentItem.value.id}`, {
+			descricao: currentItem.value.descricao,
+			valoUnitario: currentItem.value.valoUnitario
+		})
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const deleteProduct = async (item) => {
+	console.log(item)
+	try {
+		await axios.delete(`http://localhost:3000/produtos/${item.id}`)
+		store.commit("deleteProduct", item);
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 
 </script>
 
@@ -231,6 +292,23 @@ const deletePerson = async (item) => {
 							type="text" 
 							id="dataNascimento" 
 							v-model="currentItem.dataNascimento"
+						/>
+
+						<!-- PRODUTO -->
+						<label v-if="props.type === 'produto'" for="descricao">Descrição</label>
+						<input 
+							v-if="props.type === 'produto'" 
+							type="text" 
+							id="descricao" 
+							v-model="currentItem.descricao"
+						/>
+
+						<label v-if="props.type === 'produto'" for="valorUnitario">Valor Unitário</label>
+						<input 
+							v-if="props.type === 'produto'" 
+							type="text" 
+							id="valorUnitario" 
+							v-model="currentItem.valoUnitario"
 						/>
 					</div>
                 </div>
