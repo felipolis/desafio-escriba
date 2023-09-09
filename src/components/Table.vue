@@ -90,6 +90,15 @@ const enviarFormulario = () => {
 	closeModal()
 }
 
+const handleDelete = (item) => {
+	if (props.type === "pessoa") {
+		deletePerson(item)
+	}
+}
+
+
+
+
 
 const createPerson = async () => {
 	// gera um id 
@@ -115,6 +124,18 @@ const editPerson = async () => {
 			cpf: currentItem.value.cpf,
 			dataNascimento: currentItem.value.dataNascimento
 		})
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+
+
+const deletePerson = async (item) => {
+	console.log(item)
+	try {
+		await axios.delete(`http://localhost:3000/pessoas/${item.id}`)
+		store.commit("deletePerson", item);
 	} catch (error) {
 		console.log(error)
 	}
@@ -150,7 +171,7 @@ const editPerson = async () => {
 
 					<td class="btns">
 						<button class="edit" @click="openModal('edit', item)">Editar</button>
-						<button class="del">Excluir</button>
+						<button class="del" @click="handleDelete(item)">Excluir</button>
 					</td>
 				</tr>
 			</tbody>

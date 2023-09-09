@@ -18,3 +18,7 @@ export function setModalState(state, isOpen) {
 export function addPerson(state, person) {
     state.searchedPeople.push(person)
 }
+
+export function deletePerson(state, person) {
+    state.searchedPeople = state.searchedPeople.filter(p => p.id !== person.id)
+}
