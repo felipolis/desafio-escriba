@@ -317,7 +317,20 @@ const deleteProduct = async (item) => {
 							class="select-item"
 						>
 							<label v-if="props.type === 'pedido'" for="produto">Produto</label>
-							<input v-if="props.type === 'pedido'" type="text" id="produto" />
+							<select
+								v-if="props.type === 'pedido'"
+								name="produto" 
+								id="produto"
+							>
+								<option 
+									v-for="produto in store.state.searchedProducts" 
+									:key="produto.id" 
+									:value="produto.id"
+								>
+									{{ produto.descricao }}
+								</option>
+							</select>
+
 
 							<label v-if="props.type === 'pedido'" for="quantidade">Quantidade</label>
 							<input v-if="props.type === 'pedido'" type="number" id="quantidade" />
@@ -498,7 +511,6 @@ const deleteProduct = async (item) => {
 					padding: 10px;
 					border-radius: 5px;
 					border: 1px solid #bdc3c7;
-					margin-bottom: 10px;
 				}
 
 				.select-item {
@@ -507,12 +519,19 @@ const deleteProduct = async (item) => {
 					justify-content: space-between;
 					align-items: center;
 					margin-bottom: 10px;
+					margin-top: 10px;
 					gap: 1rem;
 
 					input {
 						width: 50%;
 						height: 100%;
 					}
+
+					select {
+						width: 50%;
+						height: 100%;
+					}
+
 					
 					button {
 						width: 20%;
