@@ -47,7 +47,9 @@ const openModal = (mode, item=null) => {
 		modalTitle.value = "Editar " + props.type
 		currentItem.value = {...item}
 		action.value = "edit"
-		selectedProducts.value = [...item.itens]
+		if (props.type === "pedido") {
+			selectedProducts.value = [...item.itens]
+		}
 	}
 	store.commit("setModalState", true);
 }
