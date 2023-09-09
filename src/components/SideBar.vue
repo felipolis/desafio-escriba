@@ -14,7 +14,7 @@
                 exact
             >
                 <i class="fa-regular fa-user"></i>
-                Pessoas
+                <span>Pessoas</span>
             </router-link>
             <router-link
                 to="/produtos"
@@ -22,7 +22,7 @@
                 exact
             >
                 <i class="fa-solid fa-tag"></i>
-                Produtos
+                <span>Produtos</span>
             </router-link>
             <router-link
                 to="/pedidos"
@@ -30,7 +30,7 @@
                 exact
             >
                 <i class="fa-brands fa-shopify"></i>
-                Pedidos
+                <span>Pedidos</span>
             </router-link>
         </div>
     </div>
@@ -80,6 +80,13 @@
                     background-color: #f5f5f5;
                 }
             }
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar-container {
+            width: 100%;
+            border-radius: 1rem;
         }
     }
 
