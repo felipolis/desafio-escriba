@@ -267,7 +267,6 @@ const addProduct = () => {
 
 
 	// Adiciona o produto em selectedProducts
-
 	selectedProducts.value.push({
 		id: Math.floor(Math.random() * 1000) + 1,
 		produto: {
@@ -331,10 +330,6 @@ const formatCPF = (cpf) => {
   cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Aplica a máscara
   return cpf;
 };
-
-const formattedCPF = computed(() => {
-  return formatCPF(currentItem.value.cpf || ''); // Substitua "currentItem.value.cpf" pelo valor do seu campo CPF
-});
 
 </script>
 
