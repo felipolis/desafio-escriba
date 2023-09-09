@@ -30,3 +30,7 @@ export function addProduct(state, product) {
 export function deleteProduct(state, product) {
     state.searchedProducts = state.searchedProducts.filter(p => p.id !== product.id)
 }
+
+export function addOrder(state, order) {
+    state.searchedOrders.push(order)
+}

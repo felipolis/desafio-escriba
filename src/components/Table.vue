@@ -34,6 +34,9 @@ onMounted(() => {
 const closeModal = () => {
     store.commit("setModalState", false);
 	currentItem.value = {}
+	selectedProducts.value = []
+	currentProduct.value = {}
+	currentQtd.value = 0
 }
 
 const openModal = (mode, item=null) => {
@@ -117,6 +120,35 @@ const enviarFormulario = () => {
 
 		} else if (action.value === 'edit') {
 			editProduct()
+		}
+	} else if (props.type === "pedido") {
+		if (Object.keys(currentItem.value).length === 0) {
+			if (!currentItem.value.cliente) {
+				createToast("Selecione um cliente", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+
+			if (selectedProducts.value.length === 0) {
+				createToast("Adicione pelo menos um produto", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+			return
+		}
+
+		// Envia o formulário
+		if (action.value === 'create') {
+			createOrder()
+
+		} else if (action.value === 'edit') {
+			editOrder()
 		}
 	}
 
@@ -238,6 +270,23 @@ const addProduct = () => {
 	})
 }
 
+const createOrder = async () => {
+	const id = Math.floor(Math.random() * 1000) + 1
+
+	try {
+		const response = await axios.post('http://localhost:3000/pedidos', {
+			id: id,
+			cliente: currentItem.value.cliente,
+			dataEmissao: new Date().toISOString().slice(0, 10),
+			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
+			itens: selectedProducts.value
+		})
+		store.commit("addOrder", response.data);
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 </script>
 
 <template>
@@ -336,11 +385,16 @@ const addProduct = () => {
 
 						<!-- select de um cliente -->
 						<label v-if="props.type === 'pedido'" for="cliente">Cliente</label>
-						<select v-if="props.type === 'pedido'" name="cliente" id="cliente">
+						<select 
+							v-if="props.type === 'pedido'" 
+							name="cliente" 
+							id="cliente"
+							v-model="currentItem.cliente"
+						>
 							<option 
 								v-for="cliente in store.state.searchedPeople" 
 								:key="cliente.id" 
-								:value="cliente.id"
+								:value="cliente"
 							>
 								{{ cliente.nome }}
 							</option>
@@ -407,6 +461,15 @@ const addProduct = () => {
 							</button>
 						</div>
 
+						<!-- Valor total -->
+						<label v-if="props.type === 'pedido'" for="valorTotal">Valor Total</label>
+						<input 
+							v-if="props.type === 'pedido'" 
+							type="text" 
+							id="valorTotal" 
+							:value="selectedProducts.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0)"
+							disabled
+						/>
 
 						
 
