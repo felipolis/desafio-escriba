@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, onMounted, ref } from 'vue'
 import store from "../store";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
@@ -21,6 +21,12 @@ const modalTitle = ref("")
 const isModalOpen = computed(() => store.state.isModalOpen)
 const currentItem = ref({})
 const action = ref("")
+const selectedProducts = ref([])
+
+onMounted(() => {
+	store.dispatch("searchPeople")
+	store.dispatch("searchProducts")
+})
 
 
 const closeModal = () => {
@@ -125,10 +131,6 @@ const handleDelete = (item) => {
 	}
 }
 
-
-
-
-
 const createPerson = async () => {
 	const id = Math.floor(Math.random() * 1000) + 1
 
@@ -201,7 +203,6 @@ const deleteProduct = async (item) => {
 	}
 }
 
-
 </script>
 
 <template>
@@ -237,21 +238,6 @@ const deleteProduct = async (item) => {
 				</tr>
 			</tbody>
 		</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -310,6 +296,48 @@ const deleteProduct = async (item) => {
 							id="valorUnitario" 
 							v-model="currentItem.valoUnitario"
 						/>
+
+						<!-- PEDIDO -->
+
+						<!-- select de um cliente -->
+						<label v-if="props.type === 'pedido'" for="cliente">Cliente</label>
+						<select v-if="props.type === 'pedido'" name="cliente" id="cliente">
+							<option 
+								v-for="cliente in store.state.searchedPeople" 
+								:key="cliente.id" 
+								:value="cliente.id"
+							>
+								{{ cliente.nome }}
+							</option>
+						</select>
+
+						<!-- input produto | input quantidade | btn + -->
+						<div
+							v-if="props.type === 'pedido'"
+							class="select-item"
+						>
+							<label v-if="props.type === 'pedido'" for="produto">Produto</label>
+							<input v-if="props.type === 'pedido'" type="text" id="produto" />
+
+							<label v-if="props.type === 'pedido'" for="quantidade">Quantidade</label>
+							<input v-if="props.type === 'pedido'" type="number" id="quantidade" />
+
+							<button 
+								v-if="props.type === 'pedido'"
+								@click="addProduct()"
+							>
+								+
+							</button>
+						</div>
+
+						<!-- lista de produtos selecionados -->
+
+
+
+						
+
+
+
 					</div>
                 </div>
 
@@ -437,7 +465,7 @@ const deleteProduct = async (item) => {
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        width: 400px;
+        width: 60%;
         max-width: 90%;
         }
 
@@ -464,7 +492,37 @@ const deleteProduct = async (item) => {
 					padding: 10px;
 					border-radius: 5px;
 					border: 1px solid #bdc3c7;
+				}
+
+				select {
+					padding: 10px;
+					border-radius: 5px;
+					border: 1px solid #bdc3c7;
 					margin-bottom: 10px;
+				}
+
+				.select-item {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 10px;
+					gap: 1rem;
+
+					input {
+						width: 50%;
+						height: 100%;
+					}
+					
+					button {
+						width: 20%;
+						padding: 10px;
+						border-radius: 5px;
+						border: none;
+						cursor: pointer;
+						color: white;
+						background-color: #409EFF;
+					}
 				}
 			}
         }
