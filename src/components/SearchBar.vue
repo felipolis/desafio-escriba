@@ -61,7 +61,7 @@ const search = async () => {
         }
 
         .search-button {
-            width: 20%;
+            width: 15rem;
             button {
                 width: 100%;
                 height: 100%;

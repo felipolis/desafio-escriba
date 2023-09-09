@@ -18,7 +18,6 @@ const getPeople = async () => {
     try {
         const response = await axios.get('http://localhost:3000/pessoas')
         store.commit("setSearchedPeople", response.data);
-        header.value = Object.keys(response.data[0])
     } catch (error) {
         console.log(error)
     }

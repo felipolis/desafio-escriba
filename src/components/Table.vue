@@ -41,6 +41,10 @@ const props = defineProps({
 
 
 <style lang="scss" scoped>
+
+::-webkit-scrollbar {
+	display: none;
+}
 .table {
 	width: 100%;
 	height: 92%;
@@ -121,4 +125,39 @@ const props = defineProps({
 		}
 	}
 }
+
+@media (max-width: 900px) {
+	.table {
+		table {
+			thead {
+				tr {
+					th {
+						font-size: 0.8rem;
+					}
+
+					.add {
+						button {
+							font-size: 0.8rem;
+						}
+					}
+				}
+			}
+
+			tbody {
+				tr {
+					td {
+						font-size: 0.8rem;
+					}
+
+					.btns {
+						button {
+							font-size: 0.8rem;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 </style>
