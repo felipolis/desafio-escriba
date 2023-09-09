@@ -326,6 +326,16 @@ const deleteOrder = async (item) => {
 	}
 }
 
+const formatCPF = (cpf) => {
+  cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+  cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Aplica a máscara
+  return cpf;
+};
+
+const formattedCPF = computed(() => {
+  return formatCPF(currentItem.value.cpf || ''); // Substitua "currentItem.value.cpf" pelo valor do seu campo CPF
+});
+
 </script>
 
 <template>
@@ -393,6 +403,8 @@ const deleteOrder = async (item) => {
 							type="text" 
 							id="cpf" 
 							v-model="currentItem.cpf"
+							@input="currentItem.cpf = formatCPF($event.target.value)"
+							:maxlength="14"
 						/>
 
 						<label v-if="props.type === 'pessoa'" for="dataNascimento">Data de Nascimento</label>
