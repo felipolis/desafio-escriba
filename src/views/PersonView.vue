@@ -45,7 +45,6 @@ onMounted(() => {
     flex-direction: column;
     height: 100%;
     width: 80%;
-
 }
 </style>
 

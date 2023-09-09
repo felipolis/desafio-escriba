@@ -16,7 +16,6 @@ const search = async () => {
     } else if (routeName === 'pedidos') {
         store.dispatch("searchOrders", keyword.value);
     }
-
 }
 
 </script>

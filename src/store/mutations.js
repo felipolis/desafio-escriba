@@ -10,3 +10,7 @@ export function setSearchedProducts(state, products) {
 export function setSearchedOrders(state, orders) {
     state.searchedOrders = orders || []
 }
+
+export function setModalState(state, isOpen) {
+    state.isModalOpen = isOpen
+}
