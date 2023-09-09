@@ -45,7 +45,8 @@ const openModal = (mode, item=null) => {
 		action.value = "create"
 	} else if (mode === "edit") {
 		modalTitle.value = "Editar " + props.type
-		currentItem.value = item
+		currentItem.value = {...item}
+		console.log(currentItem.value)
 		action.value = "edit"
 	}
 	store.commit("setModalState", true);
@@ -241,7 +242,7 @@ const deleteProduct = async (item) => {
 
 const addProduct = () => {
 	// Verifica se o produto ja nao foi adicionado em selectedProducst
-	if (selectedProducts.value.find(product => product.id === currentProduct.value)) {
+	if (selectedProducts.value.find(product => product.produto?.id === currentProduct.value)) {
 		createToast("Produto já adicionado", {
 			type: "danger",
 			hideProgressBar: true,
@@ -264,11 +265,16 @@ const addProduct = () => {
 
 
 	// Adiciona o produto em selectedProducts
+
 	selectedProducts.value.push({
-		id: currentProduct.value,
-		descricao: store.state.searchedProducts.find(product => product.id === currentProduct.value).descricao,
+		id: Math.floor(Math.random() * 1000) + 1,
+		produto: {
+			id: currentProduct.value,
+			descricao: store.state.searchedProducts.find(product => product.id === currentProduct.value).descricao
+		},
+		quantidade: currentQtd.value,
 		valorUnitario: store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario,
-		quantidade: currentQtd.value
+		subtotal: currentQtd.value * store.state.searchedProducts.find(product => product.id === currentProduct.value).valoUnitario
 	})
 }
 
@@ -295,7 +301,10 @@ const createOrder = async () => {
 const editOrder = async () => {
 	try {
 		await axios.put(`http://localhost:3000/pedidos/${currentItem.value.id}`, {
-			cliente: currentItem.value.cliente,
+			cliente: {
+				id: currentItem.value.cliente.id,
+				nome: currentItem.value.cliente.nome,
+			},
 			dataEmissao: new Date().toISOString().slice(0, 10),
 			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
 			itens: selectedProducts.value
@@ -474,7 +483,7 @@ const deleteOrder = async (item) => {
 						>
 							<input
 								type="text"
-								:value="produto.descricao"
+								:value="produto.produto.descricao"
 								disabled
 							/>
 							<input
