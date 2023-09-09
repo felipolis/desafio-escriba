@@ -15,7 +15,7 @@
 		justify-content: center;
 		align-items: center;
 		height: 100%;
-		width: 70%;
+		width: 80%;
 		background-color: white;
 		.img-container {
 			display: flex;

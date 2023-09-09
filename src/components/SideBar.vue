@@ -7,7 +7,7 @@
 <style lang="scss">
     .sidebar-container {
         background-color: white;
-        width: 30%;
+        width: 20%;
         border-radius: 1rem;
     }
 

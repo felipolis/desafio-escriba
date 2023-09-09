@@ -10,22 +10,22 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'Home',
+            name: 'home',
             component: HomeView
         },
         {
-            path: '/person',
-            name: 'Person',
+            path: '/pessoas',
+            name: 'pessoas',
             component: PersonView
         },
         {
-            path: '/product',
-            name: 'Product',
+            path: '/produtos',
+            name: 'produtos',
             component: ProductView
         },
         {
-            path: '/order',
-            name: 'Order',
+            path: '/pedidos',
+            name: 'pedidos',
             component: OrderView
         }
     ]

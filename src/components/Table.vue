@@ -17,10 +17,7 @@ const props = defineProps({
 		<table>
 			<thead>
 				<tr>
-						<th>ID</th>
-						<th>Nome</th>
-						<th>CPF</th>
-						<th>Nascimento</th>
+						<th v-for="t in header" :key="t">{{ t }}</th>
 						<th class="add">
 							<button>Adicionar</button>
 						</th>

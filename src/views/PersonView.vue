@@ -1,55 +1,42 @@
 <script setup>
 import Table from '../components/Table.vue'
-import { ref } from 'vue'
+import SearchBar from '../components/SearchBar.vue'
+import { computed, onMounted, ref } from 'vue'
+import axios from 'axios'
+import store from "../store";
 
 const header = ref([
-    'ID',
-    'Nome',
-    'CPF',
-    'Nascimento',
-    'Ações'
+    "ID",
+    "Nome",
+    "CPF",
+    "Nascimento"
 ])
 
-const data = ref([
-    {
-        id: 1,
-        nome: 'teste',
-        cpf: '41182700809',
-        dataNascimento: '14/12/1999'
-    },
-    {
-        id: 1,
-        nome: 'teste',
-        cpf: '41182700809',
-        dataNascimento: '14/12/1999'
-    },
-    {
-        id: 1,
-        nome: 'teste',
-        cpf: '41182700809',
-        dataNascimento: '14/12/1999'
-    },
-])
+const data = computed(() => store.state.searchedPeople)
 
+const getPeople = async () => {
+    try {
+        const response = await axios.get('http://localhost:3000/pessoas')
+        store.commit("setSearchedPeople", response.data);
+        header.value = Object.keys(response.data[0])
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+onMounted(() => {
+    getPeople()
+})
 
 </script>
 
 <template>
     <div class="person-container">
         <!-- SEARCH -->
-        <div class="search">
-            <div class="search-input">
-                <input type="text" placeholder="Pesquisar" />
-            </div>
-            <div class="search-button">
-                <button>Pesquisar</button>
-            </div>
-        </div>
+        <SearchBar />
+
         <!-- TABLE -->
         <Table :header="header" :data="data" />
-
-        
-        
     </div>
 </template>
 
@@ -58,53 +45,7 @@ const data = ref([
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 70%;
-
-    .search {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 8%;
-        width: 100%;
-        background-color: white;
-        border-radius: 1rem;
-        padding: 1rem;
-        margin-bottom: 1rem;
-
-        .search-input {
-            width: 70%;
-            input {
-                width: 100%;
-                height: 100%;
-                border: none;
-                border-radius: 1rem;
-                padding: 1rem;
-
-                &:focus {
-                    outline: none;
-                }
-            }
-        }
-
-        .search-button {
-            width: 20%;
-            button {
-                width: 100%;
-                height: 100%;
-                border: none;
-                border-radius: 1rem;
-                padding: 1rem;
-                background-color: #2c3e50;
-                color: white;
-                font-weight: bold;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #34495e;
-                }
-            }
-        }
-    }
+    width: 80%;
 
 }
 </style>
