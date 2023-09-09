@@ -21,8 +21,8 @@ const modalTitle = ref("")
 const isModalOpen = computed(() => store.state.isModalOpen)
 const currentItem = ref({})
 const action = ref("")
-const selectedProducts = ref([])
-const currentProduct = ref({})
+const selectedProducts = ref([]) // Array de produtos selecionados
+const currentProduct = ref({}) // Produto selecionado
 const currentQtd = ref(0)
 
 onMounted(() => {
@@ -162,6 +162,8 @@ const handleDelete = (item) => {
 		deletePerson(item)
 	} else if (props.type === "produto") {
 		deleteProduct(item)
+	} else if (props.type === "pedido") {
+		deleteOrder(item)
 	}
 }
 
@@ -276,12 +278,38 @@ const createOrder = async () => {
 	try {
 		const response = await axios.post('http://localhost:3000/pedidos', {
 			id: id,
-			cliente: currentItem.value.cliente,
+			cliente: {
+				id: currentItem.value.cliente.id,
+				nome: currentItem.value.cliente.nome,
+			},
 			dataEmissao: new Date().toISOString().slice(0, 10),
 			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
 			itens: selectedProducts.value
 		})
 		store.commit("addOrder", response.data);
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const editOrder = async () => {
+	try {
+		await axios.put(`http://localhost:3000/pedidos/${currentItem.value.id}`, {
+			cliente: currentItem.value.cliente,
+			dataEmissao: new Date().toISOString().slice(0, 10),
+			valorTotal: selectedProducts.value.reduce((acc, cur) => acc + (cur.valorUnitario * cur.quantidade), 0),
+			itens: selectedProducts.value
+		})
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const deleteOrder = async (item) => {
+	console.log(item)
+	try {
+		await axios.delete(`http://localhost:3000/pedidos/${item.id}`)
+		store.commit("deleteOrder", item);
 	} catch (error) {
 		console.log(error)
 	}
