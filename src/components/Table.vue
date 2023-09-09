@@ -1,6 +1,10 @@
 <script setup>
 import { computed, defineProps, ref } from 'vue'
 import store from "../store";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+import axios from 'axios'
+
 const props = defineProps({
 	type: String,
     header: {
@@ -14,31 +18,108 @@ const props = defineProps({
 })
 
 const modalTitle = ref("")
-
 const isModalOpen = computed(() => store.state.isModalOpen)
+const currentItem = ref({})
+const action = ref("")
+
 
 const closeModal = () => {
     store.commit("setModalState", false);
 	currentItem.value = {}
 }
 
-const enviarFormulario = () => {
-  // Lógica para enviar o formulário dentro do modal
-  // Por exemplo, fazer uma requisição AJAX
-  // Após o envio, você pode fechar o modal usando closeModal()
-}
-
-const currentItem = ref({})
-
 const openModal = (mode, item=null) => {
 	if (mode === "create") {
 		modalTitle.value = "Adicionar " + props.type
+		action.value = "create"
 	} else if (mode === "edit") {
 		modalTitle.value = "Editar " + props.type
 		currentItem.value = item
+		action.value = "edit"
 	}
 	store.commit("setModalState", true);
 }
+
+const enviarFormulario = () => {
+	// verifica se o formulário está vazio
+
+	if (props.type === "pessoa") {
+		// verificações
+		if (Object.keys(currentItem.value).length === 0) {
+			if (!currentItem.value.nome) {
+				createToast("Preencha o nome", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+
+			if (!currentItem.value.cpf) {
+				createToast("Preencha o CPF", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+
+			if (!currentItem.value.dataNascimento) {
+				createToast("Preencha a data de nascimento", {
+					type: "danger",
+					hideProgressBar: true,
+					position: "top-center",
+					timeout: 2000,
+				});
+			}
+
+
+			return
+		}
+
+		// Envia o formulário
+		if (action.value === 'create') {
+			createPerson()
+
+		} else if (action.value === 'edit') {
+			editPerson()
+		}
+		
+	}
+
+	closeModal()
+}
+
+
+const createPerson = async () => {
+	// gera um id 
+	const id = Math.floor(Math.random() * 1000) + 1
+
+	try {
+		const response = await axios.post('http://localhost:3000/pessoas', {
+			id: id,
+			nome: currentItem.value.nome,
+			cpf: currentItem.value.cpf,
+			dataNascimento: currentItem.value.dataNascimento
+		})
+		store.commit("addPerson", response.data);
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const editPerson = async () => {
+	try {
+		await axios.put(`http://localhost:3000/pessoas/${currentItem.value.id}`, {
+			nome: currentItem.value.nome,
+			cpf: currentItem.value.cpf,
+			dataNascimento: currentItem.value.dataNascimento
+		})
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 </script>
 
 <template>
@@ -74,6 +155,23 @@ const openModal = (mode, item=null) => {
 				</tr>
 			</tbody>
 		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<!-- MODAL -->
         <div v-if="isModalOpen" class="modal">

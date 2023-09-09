@@ -14,3 +14,7 @@ export function setSearchedOrders(state, orders) {
 export function setModalState(state, isOpen) {
     state.isModalOpen = isOpen
 }
+
+export function addPerson(state, person) {
+    state.searchedPeople.push(person)
+}
