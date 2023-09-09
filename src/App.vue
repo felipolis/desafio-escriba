@@ -21,5 +21,6 @@
     width: 100vw;
     padding: 1rem;
     gap: 1rem;
+    overflow-x: hidden;
   }
 </style>

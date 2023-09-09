@@ -540,6 +540,8 @@ const deleteOrder = async (item) => {
 	border-radius: 1rem;
 	padding: 1rem;
 	overflow-y: auto;
+	
+	
 
 	table {
 		width: 100%;
