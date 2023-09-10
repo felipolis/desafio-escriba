@@ -55,7 +55,7 @@ const openModal = (mode, item = null) => {
 
 const enviarFormulario = () => {
   if (props.type === "pessoa") {
-    if (Object.keys(currentItem.value).length === 0) {
+    if (Object.keys(currentItem.value).length < 3) {
       if (!currentItem.value.nome) {
         createToast("Preencha o nome", {
           type: "danger",
@@ -64,7 +64,6 @@ const enviarFormulario = () => {
           timeout: 2000,
         });
       }
-
       if (!currentItem.value.cpf) {
         createToast("Preencha o CPF", {
           type: "danger",
@@ -92,7 +91,7 @@ const enviarFormulario = () => {
       editPerson();
     }
   } else if (props.type === "produto") {
-    if (Object.keys(currentItem.value).length === 0) {
+    if (Object.keys(currentItem.value).length < 2) {
       if (!currentItem.value.descricao) {
         createToast("Preencha a descrição", {
           type: "danger",
@@ -120,7 +119,7 @@ const enviarFormulario = () => {
       editProduct();
     }
   } else if (props.type === "pedido") {
-    if (Object.keys(currentItem.value).length === 0) {
+    if (!currentItem.value.cliente || selectedProducts.value.length === 0) {
       if (!currentItem.value.cliente) {
         createToast("Selecione um cliente", {
           type: "danger",
@@ -351,6 +350,12 @@ const formatCPF = (cpf) => {
   cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Aplica a máscara
   return cpf;
 };
+
+const formatData = (data) => {
+  data = data.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+  data = data.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"); // Aplica a máscara
+  return data;
+}
 </script>
 
 <template>
@@ -451,6 +456,8 @@ const formatCPF = (cpf) => {
               type="text"
               id="dataNascimento"
               v-model="currentItem.dataNascimento"
+              @input="currentItem.dataNascimento = formatData($event.target.value)"
+              :maxlength="10"
             />
 
             <!-- PRODUTO -->
@@ -634,7 +641,7 @@ const formatCPF = (cpf) => {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 10px;
+          max-width: 100px;
         }
 
 
