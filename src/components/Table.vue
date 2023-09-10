@@ -771,6 +771,10 @@ const formatData = (data) => {
             cursor: pointer;
             color: white;
             background-color: #409eff;
+
+            &:hover {
+              background-color: #66b1ff;
+            }
           }
         }
       }
@@ -786,12 +790,21 @@ const formatData = (data) => {
         cursor: pointer;
         color: white;
         font-weight: bold;
+
         &.cancel {
           background-color: #f56c6c;
           margin-right: 10px;
+
+          &:hover {
+            background-color: #f78989;
+          }
         }
         &.submit {
           background-color: #409eff;
+
+          &:hover {
+            background-color: #66b1ff;
+          }
         }
       }
     }
