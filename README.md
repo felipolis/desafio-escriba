@@ -43,3 +43,16 @@ yarn dev
 ```
 
 Após seguir essas etapas, o projeto estará em execução e você poderá acessá-lo em seu navegador. Lembre-se de que é necessário ter tanto o serviço de backend quanto o frontend em execução para usar a aplicação corretamente.
+
+### Layout
+
+![](public/pessoas-1.png)
+![](public/pessoas-2.png)
+![](public/pessoas-3.png)
+![](public/produtos-1.png)
+![](public/produtos-2.png)
+![](public/produtos-3.png)
+![](public/pedidos-1.png)
+![](public/pedidos-2.png)
+![](public/pedidos-3.png)
+![](public/pedidos-4.png)
