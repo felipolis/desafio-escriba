@@ -347,7 +347,7 @@ const formatCPF = (cpf) => {
     <table>
       <thead>
         <tr>
-          <th v-for="t in header" :key="t">{{ t }}</th>
+          <th v-for="t in header" :key="t" :class="{ 'hide-on-small-screens': t !== header[0] && t !== header[1] }">{{ t }}</th>
           <th class="add">
             <button @click="openModal('create')">Adicionar</button>
           </th>
@@ -358,15 +358,15 @@ const formatCPF = (cpf) => {
           <td>{{ item.id }}</td>
 
           <td v-if="type === 'pessoa'">{{ item.nome }}</td>
-          <td v-if="type === 'pessoa'">{{ item.cpf }}</td>
-          <td v-if="type === 'pessoa'">{{ item.dataNascimento }}</td>
+          <td v-if="type === 'pessoa'" class="hide-on-small-screens">{{ item.cpf }}</td>
+          <td v-if="type === 'pessoa'" class="hide-on-small-screens">{{ item.dataNascimento }}</td>
 
           <td v-if="type === 'produto'">{{ item.descricao }}</td>
-          <td v-if="type === 'produto'">{{ item.valoUnitario }}</td>
+          <td v-if="type === 'produto'" class="hide-on-small-screens">{{ item.valoUnitario }}</td>
 
           <td v-if="type === 'pedido'">{{ item.cliente.nome }}</td>
-          <td v-if="type === 'pedido'">{{ item.dataEmissao }}</td>
-          <td v-if="type === 'pedido'">{{ item.valorTotal }}</td>
+          <td v-if="type === 'pedido'" class="hide-on-small-screens">{{ item.dataEmissao }}</td>
+          <td v-if="type === 'pedido'" class="hide-on-small-screens">{{ item.valorTotal }}</td>
 
           <td class="btns">
             <button class="edit" @click="openModal('edit', item)">
@@ -557,6 +557,7 @@ const formatCPF = (cpf) => {
   table {
     width: 100%;
     border-collapse: collapse;
+    overflow-x: auto;
 
     thead {
       tr {
@@ -564,6 +565,9 @@ const formatCPF = (cpf) => {
           padding: 1rem;
           text-align: left;
           border-bottom: 1px solid #bdc3c7;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .add {
@@ -595,6 +599,10 @@ const formatCPF = (cpf) => {
           padding: 1rem;
           text-align: left;
           border-bottom: 1px solid #bdc3c7;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
         }
 
         .btns {
@@ -798,5 +806,11 @@ const formatCPF = (cpf) => {
       }
     }
   }
+}
+
+@media (max-width: 600px) {
+  .hide-on-small-screens {
+      display: none;
+    }
 }
 </style>
