@@ -479,6 +479,7 @@ const formatData = (data) => {
               type="text"
               id="valorUnitario"
               v-model="currentItem.valoUnitario"
+              @input="currentItem.valoUnitario = $event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"
             />
 
             <!-- PEDIDO -->
