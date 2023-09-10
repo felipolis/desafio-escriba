@@ -54,7 +54,6 @@ const openModal = (mode, item = null) => {
 };
 
 const enviarFormulario = () => {
-
   if (props.type === "pessoa") {
     if (Object.keys(currentItem.value).length === 0) {
       if (!currentItem.value.nome) {
@@ -180,11 +179,14 @@ const createPerson = async () => {
 };
 const editPerson = async () => {
   try {
-    const response = await axios.put(`http://localhost:3000/pessoas/${currentItem.value.id}`, {
-      nome: currentItem.value.nome,
-      cpf: currentItem.value.cpf,
-      dataNascimento: currentItem.value.dataNascimento,
-    });
+    const response = await axios.put(
+      `http://localhost:3000/pessoas/${currentItem.value.id}`,
+      {
+        nome: currentItem.value.nome,
+        cpf: currentItem.value.cpf,
+        dataNascimento: currentItem.value.dataNascimento,
+      },
+    );
     store.commit("editPerson", response.data);
   } catch (error) {
     console.log(error);
@@ -217,10 +219,13 @@ const createProduct = async () => {
 
 const editProduct = async () => {
   try {
-    const response = await axios.put(`http://localhost:3000/produtos/${currentItem.value.id}`, {
-      descricao: currentItem.value.descricao,
-      valoUnitario: currentItem.value.valoUnitario,
-    });
+    const response = await axios.put(
+      `http://localhost:3000/produtos/${currentItem.value.id}`,
+      {
+        descricao: currentItem.value.descricao,
+        valoUnitario: currentItem.value.valoUnitario,
+      },
+    );
     store.commit("editProduct", response.data);
   } catch (error) {
     console.log(error);
@@ -310,18 +315,21 @@ const createOrder = async () => {
 
 const editOrder = async () => {
   try {
-    const response = await axios.put(`http://localhost:3000/pedidos/${currentItem.value.id}`, {
-      cliente: {
-        id: currentItem.value.cliente.id,
-        nome: currentItem.value.cliente.nome,
+    const response = await axios.put(
+      `http://localhost:3000/pedidos/${currentItem.value.id}`,
+      {
+        cliente: {
+          id: currentItem.value.cliente.id,
+          nome: currentItem.value.cliente.nome,
+        },
+        dataEmissao: new Date().toISOString().slice(0, 10),
+        valorTotal: selectedProducts.value.reduce(
+          (acc, cur) => acc + cur.valor * cur.quantidade,
+          0,
+        ),
+        itens: selectedProducts.value,
       },
-      dataEmissao: new Date().toISOString().slice(0, 10),
-      valorTotal: selectedProducts.value.reduce(
-        (acc, cur) => acc + cur.valor * cur.quantidade,
-        0,
-      ),
-      itens: selectedProducts.value,
-    });
+    );
     store.commit("editOrder", response.data);
   } catch (error) {
     console.log(error);
@@ -350,7 +358,15 @@ const formatCPF = (cpf) => {
     <table>
       <thead>
         <tr>
-          <th v-for="t in header" :key="t" :class="{ 'hide-on-small-screens': t !== header[0] && t !== header[1] }">{{ t }}</th>
+          <th
+            v-for="t in header"
+            :key="t"
+            :class="{
+              'hide-on-small-screens': t !== header[0] && t !== header[1],
+            }"
+          >
+            {{ t }}
+          </th>
           <th class="add">
             <button @click="openModal('create')">Adicionar</button>
           </th>
@@ -361,15 +377,28 @@ const formatCPF = (cpf) => {
           <td>{{ item.id }}</td>
 
           <td v-if="type === 'pessoa'">{{ item.nome }}</td>
-          <td v-if="type === 'pessoa'" class="hide-on-small-screens">{{ item.cpf }}</td>
-          <td v-if="type === 'pessoa'" class="hide-on-small-screens">{{ item.dataNascimento }}</td>
+          <td v-if="type === 'pessoa'" class="hide-on-small-screens">
+            {{ item.cpf }}
+          </td>
+          <td v-if="type === 'pessoa'" class="hide-on-small-screens">
+            {{ item.dataNascimento }}
+          </td>
 
           <td v-if="type === 'produto'">{{ item.descricao }}</td>
-          <td v-if="type === 'produto'" class="hide-on-small-screens">{{ item.valoUnitario }}</td>
+          <td
+            v-if="type === 'produto'"
+            class="hide-on-small-screens"
+          >
+            {{ item.valoUnitario }}
+          </td>
 
           <td v-if="type === 'pedido'">{{ item.cliente.nome }}</td>
-          <td v-if="type === 'pedido'" class="hide-on-small-screens">{{ item.dataEmissao }}</td>
-          <td v-if="type === 'pedido'" class="hide-on-small-screens">{{ item.valorTotal }}</td>
+          <td v-if="type === 'pedido'" class="hide-on-small-screens">
+            {{ item.dataEmissao }}
+          </td>
+          <td v-if="type === 'pedido'" class="hide-on-small-screens">
+            {{ item.valorTotal }}
+          </td>
 
           <td class="btns">
             <button class="edit" @click="openModal('edit', item)">
@@ -605,12 +634,14 @@ const formatCPF = (cpf) => {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-
+          max-width: 10px;
         }
+
 
         .btns {
           display: flex;
           justify-content: flex-end;
+          max-width: none;
 
           button {
             background-color: #409eff;
@@ -813,7 +844,7 @@ const formatCPF = (cpf) => {
 
 @media (max-width: 600px) {
   .hide-on-small-screens {
-      display: none;
-    }
+    display: none;
+  }
 }
 </style>
