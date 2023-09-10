@@ -54,7 +54,6 @@ const openModal = (mode, item = null) => {
 };
 
 const enviarFormulario = () => {
-  // verifica se o formulário está vazio
 
   if (props.type === "pessoa") {
     if (Object.keys(currentItem.value).length === 0) {
@@ -581,6 +580,10 @@ const formatCPF = (cpf) => {
             padding-bottom: 0.5rem;
             cursor: pointer;
             color: white;
+
+            &:hover {
+              background-color: #66b1ff;
+            }
           }
         }
       }
@@ -612,10 +615,18 @@ const formatCPF = (cpf) => {
             &.edit {
               background-color: #67c23a;
               margin-right: 1rem;
+
+              &:hover {
+                background-color: #85ce61;
+              }
             }
 
             &.del {
               background-color: #f56c6c;
+
+              &:hover {
+                background-color: #f78989;
+              }
             }
           }
         }

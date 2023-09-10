@@ -72,13 +72,14 @@
                 gap: 1rem;
 
                 &.active {
-                    background-color: #f5f5f5;
+                    background-color: #e0e0e0;
                 }
 
 
                 &:hover {
                     background-color: #f5f5f5;
                 }
+
             }
         }
     }
