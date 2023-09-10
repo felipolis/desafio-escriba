@@ -180,11 +180,12 @@ const createPerson = async () => {
 };
 const editPerson = async () => {
   try {
-    await axios.put(`http://localhost:3000/pessoas/${currentItem.value.id}`, {
+    const response = await axios.put(`http://localhost:3000/pessoas/${currentItem.value.id}`, {
       nome: currentItem.value.nome,
       cpf: currentItem.value.cpf,
       dataNascimento: currentItem.value.dataNascimento,
     });
+    store.commit("editPerson", response.data);
   } catch (error) {
     console.log(error);
   }
@@ -216,10 +217,11 @@ const createProduct = async () => {
 
 const editProduct = async () => {
   try {
-    await axios.put(`http://localhost:3000/produtos/${currentItem.value.id}`, {
+    const response = await axios.put(`http://localhost:3000/produtos/${currentItem.value.id}`, {
       descricao: currentItem.value.descricao,
       valoUnitario: currentItem.value.valoUnitario,
     });
+    store.commit("editProduct", response.data);
   } catch (error) {
     console.log(error);
   }
@@ -308,7 +310,7 @@ const createOrder = async () => {
 
 const editOrder = async () => {
   try {
-    await axios.put(`http://localhost:3000/pedidos/${currentItem.value.id}`, {
+    const response = await axios.put(`http://localhost:3000/pedidos/${currentItem.value.id}`, {
       cliente: {
         id: currentItem.value.cliente.id,
         nome: currentItem.value.cliente.nome,
@@ -320,6 +322,7 @@ const editOrder = async () => {
       ),
       itens: selectedProducts.value,
     });
+    store.commit("editOrder", response.data);
   } catch (error) {
     console.log(error);
   }
